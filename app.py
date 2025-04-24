@@ -1,5 +1,5 @@
 import streamlit as st
-from sklearn.externals import joblib
+import joblib
 
 model = joblib.load("fakenews_model.pkl")
 vectorizer = joblib.load("tfidf_vectorizer.pkl")
