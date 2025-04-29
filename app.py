@@ -29,13 +29,29 @@ if st.button("Predict"):
         else:
             st.success(f"✅ Prediction: **REAL NEWS** ({prediction_proba[1] * 100:.2f}% confidence)")
 
-        # Display both probabilities cleanly
+        # Display both probabilities nicely
         st.markdown("### 🔍 Prediction Confidence Breakdown:")
 
-        # Display fake news probability
-        st.write(f"**🛑 Fake News Probability:** {prediction_proba[0] * 100:.2f}%")
-        st.progress(prediction_proba[0])  # between 0 and 1
+        # Custom HTML for prettier horizontal bars
+        fake_news_percentage = prediction_proba[0] * 100
+        real_news_percentage = prediction_proba[1] * 100
 
-        # Display real news probability
-        st.write(f"**✅ Real News Probability:** {prediction_proba[1] * 100:.2f}%")
-        st.progress(prediction_proba[1])  # between 0 and 1
+        # Fake News Bar (Red)
+        st.markdown(
+            f"""
+            <div style="background-color:#FFCCCC; padding:5px; border-radius:5px;">
+                <b>🛑 Fake News:</b> {fake_news_percentage:.2f}% 
+                <div style="background-color:#FF0000; width:{fake_news_percentage}%; height:20px; border-radius:5px;"></div>
+            </div>
+            """, unsafe_allow_html=True
+        )
+
+        # Real News Bar (Green)
+        st.markdown(
+            f"""
+            <div style="background-color:#CCFFCC; padding:5px; border-radius:5px; margin-top:10px;">
+                <b>✅ Real News:</b> {real_news_percentage:.2f}% 
+                <div style="background-color:#00CC00; width:{real_news_percentage}%; height:20px; border-radius:5px;"></div>
+            </div>
+            """, unsafe_allow_html=True
+        )
