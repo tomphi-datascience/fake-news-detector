@@ -1,9 +1,17 @@
 import streamlit as st
 import joblib
+import re
 
-# Load the saved TF-IDF vectorizer and the trained model
+# Load the saved TF-IDF vectorizer and trained model
 tfidf = joblib.load("tfidf_vectorizer.pkl")
 model = joblib.load("fakenews_model.pkl")
+
+# Simple text cleaning function
+def clean_text(text):
+    text = text.lower()
+    text = re.sub(r'\s+', ' ', text)  # Remove multiple spaces
+    text = re.sub(r'[^a-zA-Z0-9\s]', '', text)  # Remove special characters
+    return text.strip()
 
 # Set up Streamlit UI
 st.title("📰 Fake News Detector")
@@ -16,8 +24,11 @@ if st.button("Predict"):
     if user_input.strip() == "":
         st.warning("⚠️ Please enter some text to analyze.")
     else:
+        # Clean the input
+        cleaned_input = clean_text(user_input)
+
         # Preprocess and transform input
-        input_vectorized = tfidf.transform([user_input])
+        input_vectorized = tfidf.transform([cleaned_input])
 
         # Predict
         prediction = model.predict(input_vectorized)[0]
